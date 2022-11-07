@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "9966309706",
+    "project_id": "rememberzap-f4900",
+    "storage_bucket": "rememberzap-f4900.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9966309706:android:36889e1b77494880cbb1b3",
+        "android_client_info": {
+          "package_name": "com.example.lembre_zap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9966309706-836vb2knaq09lv95eb177oesifkvu4v8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTpslK7poX1wHQQPSyVKxH0HnG1OcH-WM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9966309706-836vb2knaq09lv95eb177oesifkvu4v8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "9966309706-a68hnovjtnusdeern4iqklc9aq4mnpvp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ThiagoAlves.RememberZap"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
