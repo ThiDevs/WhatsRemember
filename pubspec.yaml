@@ -35,9 +35,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   cloud_firestore: ^3.4.7
+  flutter_native_splash: ^2.2.14
   firebase_core : 
   http:
   awesome_dialog:
+  mask_text_input_formatter: ^2.4.0
+  country_picker: ^2.0.16
 
 
 dev_dependencies:
@@ -53,7 +56,22 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+# flutter_native_splash-development.yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo.png
+  branding: assets/logo.png
+  color_dark: "#121212"
+  image_dark: assets/logo.png
+  branding_dark: assets/logo.png
 
+  android_12:
+    image: assets/logo.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/logo.png
+    icon_background_color_dark: "#121212"
+
+  web: false
 # The following section is specific to Flutter.
 flutter:
 
