@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
@@ -7,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 // void main() {
 //   runApp(const MyApp());
@@ -19,7 +18,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  var alarms = <Widget>[];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,17 +28,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Whats Remember ?'),
+      home: MyHomePage(title: 'Whats Remember ?', list: alarms),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title, required this.list})
+      : super(key: key);
 
   final String title;
+  final List<Widget> list;
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState(list);
 }
 
 class Alarm {
@@ -50,7 +53,12 @@ class Alarm {
   }
 }
 
+bool carregado = false;
+
 class _MyHomePageState extends State<MyHomePage> {
+  _MyHomePageState(this.alarms);
+
+  final List<Widget> alarms;
   int _counter = 0;
   String? _radioValue = "";
   String choice = "";
@@ -85,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  TimeOfDay _time = TimeOfDay(hour: 7, minute: 15);
+  TimeOfDay _time = const TimeOfDay(hour: 7, minute: 15);
 
   void _selectTime() async {
     final TimeOfDay? newTime = await showTimePicker(
@@ -135,23 +143,22 @@ class _MyHomePageState extends State<MyHomePage> {
         .catchError((error) => print("Failed to add user: $error"));
   }
 
-  List<Widget> alarms = <Widget>[];
-  Future<void> getAlarms() async {
+  Future<List<Widget>> getAlarms() async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     users.get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         // var name = doc["name"];
-        var number = doc["number"];
-        var txt = doc["txt"];
         setState(() {
+          var number = doc["number"];
+          var txt = doc["txt"];
           alarms.add(Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
-                  height: 50,
+                const SizedBox(
+                  height: 15,
                 ),
                 ListTile(
-                  leading: Icon(Icons.alarm),
+                  leading: const Icon(Icons.alarm),
                   title: Text(number),
                   subtitle: Text(txt),
                 ),
@@ -162,43 +169,47 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: const Text('Edit'),
                       onPressed: () {/* ... */},
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 4),
                     TextButton(
                       child: const Text('Remove'),
                       onPressed: () {/* ... */},
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 2),
                   ],
                 ),
               ]));
         });
       });
     });
+    return alarms;
   }
 
   @override
   Widget build(BuildContext context) {
     number.text = "27988710078";
     txt.text = "Coe";
-    // getAlarms();
+    var t = <Widget>[];
+    getAlarms().then((value) => t = value);
     return Scaffold(
-      body: Center(child: Text("data")),
-// new StaggeredGridView.count(
-//                       crossAxisCount: 2,
-//                       staggeredTiles: _staggeredTiles,
-//                       children: _tiles,
-//                       mainAxisSpacing: 4.0,
-//                       crossAxisSpacing: 4.0,
-//                       padding: const EdgeInsets.all(4.0),
-//                     );
+      body: Center(
+          child: ListView.builder(
+        // Let the ListView know how many items it needs to build.
+        itemCount: t.length,
+        // Provide a builder function. This is where the magic happens.
+        // Convert each item into a widget based on the type of item it is.
+        itemBuilder: (context, index) {
+          var item = alarms[index];
 
+          return item;
+        },
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                    title: Text("New WhatsAlarm"),
+                    title: const Text("New WhatsAlarm"),
                     content: Column(
                       children: [
                         TextField(
@@ -211,7 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
-                              suffixIcon: Icon(Icons.numbers),
+                              suffixIcon: const Icon(Icons.numbers),
                               prefix: ElevatedButton(
                                   onPressed: () {
                                     showCountryPicker(
@@ -228,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       // Optional. Sets the theme for the country list picker.
                                       countryListTheme: CountryListThemeData(
                                         // Optional. Sets the border radius for the bottomsheet.
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                           topLeft: Radius.circular(40.0),
                                           topRight: Radius.circular(40.0),
                                         ),
@@ -247,7 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     );
                                   },
-                                  child: Icon(Icons.flag)),
+                                  child: const Icon(Icons.flag)),
                               labelText: 'Número',
                               hintText: 'Digite seu numero'),
                         ),
