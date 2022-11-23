@@ -11,6 +11,7 @@ import '../firebase_options.dart';
 import '../res/custom_color.dart';
 import '../utils/authentication.dart';
 import '../widgets/app_bar_title.dart.dart';
+import 'package:http/http.dart' as http;
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({Key? key, required User user})
@@ -58,11 +59,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var number;
+    var number = TextEditingController();
+
     var number_code;
     late Country country;
-    var numbertxt =
-        MaskTextInputFormatter(mask: "+$number_code (##) # ####-####");
+    var numbertxt = MaskTextInputFormatter(mask: "+## (##) # ####-####");
     return Scaffold(
       backgroundColor: CustomColors.firebaseNavy,
       appBar: AppBar(
@@ -159,6 +160,57 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   letterSpacing: 0.5,
                 ),
               ),
+              ElevatedButton(
+                  // style: ButtonStyle(
+                  //   // backgroundColor: MaterialStateProperty.all(
+                  //   //   CustomColors.googleBackground,
+                  //   // ),
+                  //   // shape: MaterialStateProperty.all(),
+                  // ),
+                  onPressed: () async {
+                    var date = DateTime.now();
+                    var number_send = numbertxt.unmaskText(number.text);
+                    // setState(() {
+                    //   _isSigningOut = true;
+                    //   // number_code = country.countryCode;
+                    // });
+
+                    var txt =
+                        "Envie de volta o seguinte código para esse chat: " +
+                            date.year.toString() +
+                            date.month.toString() +
+                            date.second.toString() +
+                            "-" +
+                            Random().nextInt(100).toString() +
+                            "-" +
+                            Random().nextInt(100).toString();
+                    var request = http.Request(
+                        'GET',
+                        Uri.parse(
+                            'https://9765-2804-14d-ae83-87cc-ad-2b2-47a1-d4a3.sa.ngrok.io/sendMessage/$number_send/$txt'));
+
+                    http.StreamedResponse response = await request.send();
+
+                    if (response.statusCode == 200) {
+                      print(await response.stream.bytesToString());
+                    } else {
+                      print(response.reasonPhrase);
+                    }
+                    // Navigator.of(context).pushReplacement(_routeToSignInScreen());
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        'Confirmar número do whatsapp !',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          // letterSpacing: 2,
+                        ),
+                      ),
+                    ],
+                  )),
               SizedBox(height: 28.0),
               ElevatedButton(
                   onPressed: () {
@@ -170,7 +222,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         setState(() {
                           // number.text = "+" + country.phoneCode;
                           // number_code = number.text;
-
+                          number_code = "+" + country_res.phoneCode;
                           country = country_res;
                         });
                         print('Select country: ${country_res.displayName}');
@@ -196,97 +248,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     );
                   },
                   child: Icon(Icons.flag)),
-              SizedBox(height: 28.0),
-              ElevatedButton(
-                  // style: ButtonStyle(
-                  //   // backgroundColor: MaterialStateProperty.all(
-                  //   //   CustomColors.googleBackground,
-                  //   // ),
-                  //   // shape: MaterialStateProperty.all(),
-                  // ),
-                  onPressed: () async {
-                    setState(() {
-                      _isSigningOut = true;
-                      number_code = country.countryCode;
-                      var date = DateTime.now();
-                      var number_send = numbertxt.getUnmaskedText();
-
-                      var txt =
-                          "Envie de volta o seguinte código para esse chat: " +
-                              date.year.toString() +
-                              date.month.toString() +
-                              date.second.toString() +
-                              "-" +
-                              Random().nextInt(100).toString() +
-                              "-" +
-                              Random().nextInt(100).toString();
-                    });
-                    // Navigator.of(context).pushReplacement(_routeToSignInScreen());
-                  },
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 8.0, bottom: 3.0),
-                        child: Text(
-                          'Confirmar número do whatsapp !',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            // letterSpacing: 2,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-
-                  //     Column(
-                  //   children: [
-
-                  //     SizedBox(height: 16.0),
-                  //     _isSigningOut
-                  //         ? CircularProgressIndicator(
-                  //             valueColor:
-                  //                 AlwaysStoppedAnimation<Color>(Colors.white),
-                  //           )
-                  //         : ElevatedButton(
-                  //             style: ButtonStyle(
-                  //               backgroundColor: MaterialStateProperty.all(
-                  //                 Colors.redAccent,
-                  //               ),
-                  //               shape: MaterialStateProperty.all(
-                  //                 RoundedRectangleBorder(
-                  //                   borderRadius: BorderRadius.circular(10),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             onPressed: () async {
-                  //               setState(() {
-                  //                 _isSigningOut = true;
-                  //               });
-                  //               await Authentication.signOut(context: context);
-                  //               setState(() {
-                  //                 _isSigningOut = false;
-                  //               });
-                  //               Navigator.of(context)
-                  //                   .pushReplacement(_routeToSignInScreen());
-                  //             },
-                  //             child: Padding(
-                  //               padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                  //               child: Text(
-                  //                 'Desconectar conta.',
-                  //                 style: TextStyle(
-                  //                   fontSize: 16,
-                  //                   fontWeight: FontWeight.bold,
-                  //                   color: Colors.white,
-                  //                   // letterSpacing: 2,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ),
-                  //   ],
-                  // )
-                  )
+              SizedBox(height: 8.0),
             ],
           ),
         ),
