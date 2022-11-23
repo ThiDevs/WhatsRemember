@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lembre_zap/main.dart';
 
+import '../main2.dart';
 import '../screens/user_info_screen.dart';
 import '../utils/authentication.dart';
 
@@ -43,7 +45,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                 if (user != null) {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => UserInfoScreen(
+                      builder: (context) => MainScreen(
                         user: user,
                       ),
                     ),

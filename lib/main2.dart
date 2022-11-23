@@ -1,11 +1,16 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:lembre_zap/res/custom_color.dart';
+import 'package:lembre_zap/screens/sign_in_screen.dart';
+import 'package:lembre_zap/utils/authentication.dart';
+import 'package:lembre_zap/widgets/app_bar_title.dart.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -15,38 +20,33 @@ import 'firebase_options.dart';
 //   runApp(const MyApp());
 // }
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MyApp());
-}
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//   runApp(MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-  var alarms = <Widget>[];
+class MainScreen extends StatefulWidget {
+  MainScreen({Key? key, required User user})
+      : _user = user,
+        super(key: key);
 
+  User _user;
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Whats Remember ?', list: alarms),
-    );
-  }
-}
+  _MainScreenPageState createState() => _MainScreenPageState();
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title, required this.list})
-      : super(key: key);
-
-  final String title;
-  final List<Widget> list;
-  @override
-  State<MyHomePage> createState() => _MyHomePageState(list);
+  // @override
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //     title: 'Flutter Demo',
+  //     theme: ThemeData(
+  //       primarySwatch: Colors.blue,
+  //     ),
+  //     home: MyHomePage(title: 'Whats Remember ?', list: alarms),
+  //   );
+  // }
 }
 
 class Alarm {
@@ -59,12 +59,33 @@ class Alarm {
   }
 }
 
-bool carregado = false;
+class _MainScreenPageState extends State<MainScreen> {
+  // final String title;
+  late User _user;
 
-class _MyHomePageState extends State<MyHomePage> {
-  _MyHomePageState(this.alarms);
+  bool _isSigningOut = false;
 
-  List<Widget> alarms;
+  Route _routeToSignInScreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(-1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  bool carregado = false;
+  List<Widget> alarms = <Widget>[];
   int _counter = 0;
   String? _radioValue = "";
   String choice = "";
@@ -74,24 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
-
-  // Future<UserCredential> signInWithGoogle() async {
-  //   // Trigger the authentication flow
-  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-  //   // Obtain the auth details from the request
-  //   final GoogleSignInAuthentication? googleAuth =
-  //       await googleUser?.authentication;
-
-  //   // Create a new credential
-  //   final credential = GoogleAuthProvider.credential(
-  //     accessToken: googleAuth?.accessToken,
-  //     idToken: googleAuth?.idToken,
-  //   );
-
-  //   // Once signed in, return the UserCredential
-  //   return await FirebaseAuth.instance.signInWithCredential(credential);
-  // }
 
   void radioButtonChanges(String? value) {
     _radioValue = value;
@@ -221,59 +224,124 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // number.text = "27988710078";
     // txt.text = "Coe";
-    var t = <Widget>[];
-    // getAlarms();
     return Scaffold(
-      body: Center(
-          child: FutureBuilder<List<Widget>>(
-        future: getAlarms(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: alarms.length,
-              itemBuilder: (context, index) {
-                return alarms[index];
-              },
-            );
-          }
+      backgroundColor: CustomColors.firebaseNavy,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: CustomColors.firebaseNavy,
+        title: AppBarTitle(),
+      ),
+      body: SafeArea(
+          child: Padding(
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                bottom: 20.0,
+              ),
+              child: Center(
+                  child: FutureBuilder<List<Widget>>(
+                future: getAlarms(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Stack(children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20, bottom: 320.0),
+                        child: ListView.builder(
+                          itemCount: alarms.length,
+                          itemBuilder: (context, index) {
+                            return alarms[index];
+                          },
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 400,
+                          ),
+                          Center(
+                              child: Column(
+                            children: [
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                    Colors.redAccent,
+                                  ),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  setState(() {
+                                    _isSigningOut = true;
+                                  });
+                                  await Authentication.signOut(
+                                      context: context);
+                                  setState(() {
+                                    _isSigningOut = false;
+                                  });
+                                  Navigator.of(context)
+                                      .pushReplacement(_routeToSignInScreen());
+                                },
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                  child: Text(
+                                    'Sign Out',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      letterSpacing: 2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                        ],
+                      )
+                    ]);
+                  }
 
-          /// handles others as you did on question
-          else {
-            return CircularProgressIndicator();
-          }
-        },
-        //     ListView.builder(
-        //   // Let the ListView know how many items it needs to build.
-        //   itemCount: t.length,
-        //   // Provide a builder function. This is where the magic happens.
-        //   // Convert each item into a widget based on the type of item it is.
-        //   itemBuilder: (context, index) {
-        //     var item = alarms[index];
+                  /// handles others as you did on question
+                  else {
+                    return CircularProgressIndicator();
+                  }
+                },
+                //     ListView.builder(
+                //   // Let the ListView know how many items it needs to build.
+                //   itemCount: t.length,
+                //   // Provide a builder function. This is where the magic happens.
+                //   // Convert each item into a widget based on the type of item it is.
+                //   itemBuilder: (context, index) {
+                //     var item = alarms[index];
 
-        //     return item;
-        //   },
-        // )
-        // Chip(
-        //   avatar: CircleAvatar(
-        //       backgroundColor: Colors.blue.shade900, child: Text('AH')),
-        //   label: Text('Hamilton'),
-        // ),
-        // Chip(
-        //   avatar: CircleAvatar(
-        //       backgroundColor: Colors.blue.shade900, child: Text('ML')),
-        //   label: Text('Lafayette'),
-        // ),
-        // Chip(
-        //   avatar: CircleAvatar(
-        //       backgroundColor: Colors.blue.shade900, child: Text('HM')),
-        //   label: Text('Mulligan'),
-        // ),
-        // Chip(
-        //   avatar: CircleAvatar(
-        //       backgroundColor: Colors.blue.shade900, child: Text('JL')),
-        //   label: Text('Laurens'),
-        // ),
-      )),
+                //     return item;
+                //   },
+                // )
+                // Chip(
+                //   avatar: CircleAvatar(
+                //       backgroundColor: Colors.blue.shade900, child: Text('AH')),
+                //   label: Text('Hamilton'),
+                // ),
+                // Chip(
+                //   avatar: CircleAvatar(
+                //       backgroundColor: Colors.blue.shade900, child: Text('ML')),
+                //   label: Text('Lafayette'),
+                // ),
+                // Chip(
+                //   avatar: CircleAvatar(
+                //       backgroundColor: Colors.blue.shade900, child: Text('HM')),
+                //   label: Text('Mulligan'),
+                // ),
+                // Chip(
+                //   avatar: CircleAvatar(
+                //       backgroundColor: Colors.blue.shade900, child: Text('JL')),
+                //   label: Text('Laurens'),
+                // ),
+              )))),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -323,7 +391,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           prefixIcon: const Icon(Icons.search),
                                           border: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                              color: const Color(0xFF8C98A8)
+                                              color: Colors.transparent
                                                   .withOpacity(0.2),
                                             ),
                                           ),
@@ -333,6 +401,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   },
                                   child: Flag.fromCode(
                                     FlagsCode.US,
+                                    flagSize: FlagSize.size_1x1,
+                                    height: 25, width: 25,
                                     // height: 100,
                                   )),
                               labelText: 'Número',

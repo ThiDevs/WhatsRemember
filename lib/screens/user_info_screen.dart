@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lembre_zap/screens/sign_in_screen.dart';
 
+import '../firebase_options.dart';
 import '../res/custom_color.dart';
 import '../utils/authentication.dart';
 import '../widgets/app_bar_title.dart.dart';
@@ -41,7 +43,10 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   }
 
   @override
-  void initState() {
+  void initState() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     _user = widget._user;
 
     super.initState();
