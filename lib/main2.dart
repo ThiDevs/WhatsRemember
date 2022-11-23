@@ -5,10 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:lembre_zap/res/custom_color.dart';
 import 'package:lembre_zap/screens/sign_in_screen.dart';
+import 'package:lembre_zap/screens/user_info_screen.dart';
 import 'package:lembre_zap/utils/authentication.dart';
 import 'package:lembre_zap/widgets/app_bar_title.dart.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -147,9 +149,6 @@ class _MainScreenPageState extends State<MainScreen> {
   }
 
   Future<void> addUser() async {
-    Firebase.initializeApp(
-        // options: DefaultFirebaseOptions.currentPlatform,
-        );
     // await FirebaseFirestore.instance
     //     .collection("users")
     //     .doc("fvxHIp5RdP3kYBb0hbcp")
@@ -164,6 +163,7 @@ class _MainScreenPageState extends State<MainScreen> {
           'data': _radioValue,
           'hora': _time.format(context),
           'txt': txt.text,
+          'login': _user.email
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -221,315 +221,369 @@ class _MainScreenPageState extends State<MainScreen> {
   }
 
   @override
+  void initState() {
+    Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    _user = widget._user;
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // number.text = "27988710078";
-    // txt.text = "Coe";
-    return Scaffold(
-      backgroundColor: CustomColors.firebaseNavy,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: CustomColors.firebaseNavy,
-        title: AppBarTitle(),
-      ),
-      body: SafeArea(
-          child: Padding(
-              padding: const EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                bottom: 20.0,
-              ),
-              child: Center(
-                  child: FutureBuilder<List<Widget>>(
-                future: getAlarms(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Stack(children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 320.0),
-                        child: ListView.builder(
-                          itemCount: alarms.length,
-                          itemBuilder: (context, index) {
-                            return alarms[index];
-                          },
-                        ),
+    return MaterialApp(
+
+        // title: 'Flutter layout demo',
+        theme: ThemeData(
+          primaryColorDark: Colors.black,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.blue,
+          ).copyWith(
+            secondary: Colors.orange,
+          ),
+          textTheme:
+              const TextTheme(bodyText2: TextStyle(color: Colors.purple)),
+        ),
+        home: Scaffold(
+          backgroundColor: CustomColors.firebaseNavy,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: CustomColors.firebaseNavy,
+            title: Row(children: [
+              AppBarTitle(),
+              ElevatedButton(
+                onPressed: (() {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => UserInfoScreen(
+                        user: _user,
                       ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: 400,
+                    ),
+                  );
+                }),
+                child: Icon(
+                  Icons.people,
+                  color: Colors.white,
+                ),
+              )
+            ]),
+          ),
+          body: SafeArea(
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    bottom: 20.0,
+                  ),
+                  child: Center(
+                      child: FutureBuilder<List<Widget>>(
+                    future: getAlarms(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Stack(children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 20, bottom: 320.0),
+                            child: ListView.builder(
+                              itemCount: alarms.length,
+                              itemBuilder: (context, index) {
+                                return alarms[index];
+                              },
+                            ),
                           ),
-                          Center(
-                              child: Column(
+                          Column(
                             children: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                    Colors.redAccent,
-                                  ),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  setState(() {
-                                    _isSigningOut = true;
-                                  });
-                                  await Authentication.signOut(
-                                      context: context);
-                                  setState(() {
-                                    _isSigningOut = false;
-                                  });
-                                  Navigator.of(context)
-                                      .pushReplacement(_routeToSignInScreen());
-                                },
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                  child: Text(
-                                    'Sign Out',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      letterSpacing: 2,
-                                    ),
-                                  ),
-                                ),
+                              SizedBox(
+                                height: 400,
                               ),
-                            ],
-                          )),
-                        ],
-                      )
-                    ]);
-                  }
-
-                  /// handles others as you did on question
-                  else {
-                    return CircularProgressIndicator();
-                  }
-                },
-                //     ListView.builder(
-                //   // Let the ListView know how many items it needs to build.
-                //   itemCount: t.length,
-                //   // Provide a builder function. This is where the magic happens.
-                //   // Convert each item into a widget based on the type of item it is.
-                //   itemBuilder: (context, index) {
-                //     var item = alarms[index];
-
-                //     return item;
-                //   },
-                // )
-                // Chip(
-                //   avatar: CircleAvatar(
-                //       backgroundColor: Colors.blue.shade900, child: Text('AH')),
-                //   label: Text('Hamilton'),
-                // ),
-                // Chip(
-                //   avatar: CircleAvatar(
-                //       backgroundColor: Colors.blue.shade900, child: Text('ML')),
-                //   label: Text('Lafayette'),
-                // ),
-                // Chip(
-                //   avatar: CircleAvatar(
-                //       backgroundColor: Colors.blue.shade900, child: Text('HM')),
-                //   label: Text('Mulligan'),
-                // ),
-                // Chip(
-                //   avatar: CircleAvatar(
-                //       backgroundColor: Colors.blue.shade900, child: Text('JL')),
-                //   label: Text('Laurens'),
-                // ),
-              )))),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                    title: const Text("New WhatsAlarm"),
-                    content: Column(
-                      children: [
-                        TextField(
-                          controller: number,
-                          inputFormatters: [
-                            // const UpperCaseTextFormatter(),
-                            MaskTextInputFormatter(mask: " (##) # ####-####"),
-                          ],
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              suffixIcon: const Icon(Icons.numbers),
-                              prefix: ElevatedButton(
-                                  onPressed: () {
-                                    showCountryPicker(
-                                      context: context,
-                                      //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
-                                      exclude: <String>['KN', 'MF'],
-                                      favorite: <String>['BR'],
-                                      //Optional. Shows phone code before the country name.
-                                      showPhoneCode: true,
-                                      onSelect: (Country country) {
-                                        number.text = country.countryCode;
-
-                                        print(
-                                            'Select country: ${country.displayName}');
-                                      },
-                                      // Optional. Sets the theme for the country list picker.
-                                      countryListTheme: CountryListThemeData(
-                                        // Optional. Sets the border radius for the bottomsheet.
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(40.0),
-                                          topRight: Radius.circular(40.0),
+                              Center(
+                                  child: Column(
+                                children: [
+                                  ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        Colors.redAccent,
+                                      ),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
-                                        // Optional. Styles the search field.
-                                        inputDecoration: InputDecoration(
-                                          labelText: 'Search',
-                                          hintText: 'Start typing to search',
-                                          prefixIcon: const Icon(Icons.search),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Colors.transparent
-                                                  .withOpacity(0.2),
-                                            ),
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      setState(() {
+                                        _isSigningOut = true;
+                                      });
+                                      await Authentication.signOut(
+                                          context: context);
+                                      setState(() {
+                                        _isSigningOut = false;
+                                      });
+                                      Navigator.of(context).pushReplacement(
+                                          _routeToSignInScreen());
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8.0, bottom: 8.0),
+                                      child: Text(
+                                        'Sign Out',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                            ],
+                          )
+                        ]);
+                      }
+
+                      /// handles others as you did on question
+                      else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                    //     ListView.builder(
+                    //   // Let the ListView know how many items it needs to build.
+                    //   itemCount: t.length,
+                    //   // Provide a builder function. This is where the magic happens.
+                    //   // Convert each item into a widget based on the type of item it is.
+                    //   itemBuilder: (context, index) {
+                    //     var item = alarms[index];
+
+                    //     return item;
+                    //   },
+                    // )
+                    // Chip(
+                    //   avatar: CircleAvatar(
+                    //       backgroundColor: Colors.blue.shade900, child: Text('AH')),
+                    //   label: Text('Hamilton'),
+                    // ),
+                    // Chip(
+                    //   avatar: CircleAvatar(
+                    //       backgroundColor: Colors.blue.shade900, child: Text('ML')),
+                    //   label: Text('Lafayette'),
+                    // ),
+                    // Chip(
+                    //   avatar: CircleAvatar(
+                    //       backgroundColor: Colors.blue.shade900, child: Text('HM')),
+                    //   label: Text('Mulligan'),
+                    // ),
+                    // Chip(
+                    //   avatar: CircleAvatar(
+                    //       backgroundColor: Colors.blue.shade900, child: Text('JL')),
+                    //   label: Text('Laurens'),
+                    // ),
+                  )))),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    String country_code = "";
+                    String number_code = "";
+                    number.text = "";
+                    var numbertxt = MaskTextInputFormatter(
+                        mask: "+$number_code (##) # ####-####");
+                    return AlertDialog(
+                        title: const Text("New WhatsAlarm"),
+                        content: Column(
+                          children: [
+                            TextField(
+                              controller: number,
+                              inputFormatters: [
+                                // const UpperCaseTextFormatter(),
+                                numbertxt
+                              ],
+                              decoration: InputDecoration(
+                                  // border: OutlineInputBorder(
+                                  //   borderRadius: BorderRadius.circular(15),
+                                  // ),
+                                  // suffixIcon: const Icon(Icons.numbers),
+                                  // prefix: Text("+" + number.text + "|"),
+                                  labelText: 'Número',
+                                  hintText: 'Digite seu numero'),
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  showCountryPicker(
+                                    context: context,
+                                    favorite: <String>['BR', 'US'],
+                                    showPhoneCode: true,
+                                    onSelect: (Country country) {
+                                      setState(() {
+                                        number.text = "+" + country.phoneCode;
+                                        number_code = number.text;
+                                        country_code = country.countryCode;
+                                      });
+                                      print(
+                                          'Select country: ${country.displayName}');
+                                    },
+                                    countryListTheme: CountryListThemeData(
+                                      backgroundColor: Colors.transparent,
+                                      flagSize: 20,
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(40.0),
+                                        topRight: Radius.circular(40.0),
+                                      ),
+                                      inputDecoration: InputDecoration(
+                                        labelText: 'Search',
+                                        hintText: 'Start typing to search',
+                                        prefixIcon: const Icon(Icons.search),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.transparent
+                                                .withOpacity(0.2),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                  child: Flag.fromCode(
-                                    FlagsCode.US,
-                                    flagSize: FlagSize.size_1x1,
-                                    height: 25, width: 25,
-                                    // height: 100,
-                                  )),
-                              labelText: 'Número',
-                              hintText: 'Digite seu numero'),
-                        ),
-                        Container(
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: <Widget>[
-                                    // Padding(
-                                    //   padding: EdgeInsets.only(
-                                    //       bottom: 10, left: 100, right: 100),
-                                    //   child: TextField(
-                                    //     controller: number,
-                                    //     decoration: InputDecoration(
-                                    //         border: InputBorder.none,
-                                    //         hintText: 'Digite seu numero'),
-                                    //   ),
-                                    // ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: 10, left: 100, right: 100),
-                                      child: TextField(
-                                        controller: txt,
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: 'Digite sua mensagem'),
-                                      ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: 10, left: 100),
-                                      child: Row(children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Radio(
-                                              value: 'segunda',
-                                              groupValue: _radioValue,
-                                              onChanged: radioButtonChanges,
-                                            ),
-                                            Text('Segunda'),
-                                          ],
+                                  );
+                                },
+                                child: Icon(Icons.flag)),
+                            Flag.fromString(
+                              country_code != "" ? country_code : "BR",
+                              fit: BoxFit.cover,
+                              height: 25, width: 25,
+                              // height: 100,
+                            ),
+                            Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 1,
+                                    child: Column(
+                                      children: <Widget>[
+                                        // Padding(
+                                        //   padding: EdgeInsets.only(
+                                        //       bottom: 10, left: 100, right: 100),
+                                        //   child: TextField(
+                                        //     controller: number,
+                                        //     decoration: InputDecoration(
+                                        //         border: InputBorder.none,
+                                        //         hintText: 'Digite seu numero'),
+                                        //   ),
+                                        // ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              bottom: 10,
+                                              left: 100,
+                                              right: 100),
+                                          child: TextField(
+                                            controller: txt,
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText:
+                                                    'Digite sua mensagem'),
+                                          ),
                                         ),
-                                        Column(
-                                          children: [
-                                            Radio(
-                                              value: 'terca',
-                                              groupValue: _radioValue,
-                                              onChanged: radioButtonChanges,
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              bottom: 10, left: 100),
+                                          child: Row(children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Radio(
+                                                  value: 'segunda',
+                                                  groupValue: _radioValue,
+                                                  onChanged: radioButtonChanges,
+                                                ),
+                                                Text('Segunda'),
+                                              ],
                                             ),
-                                            Text('Terca'),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            Radio(
-                                              value: 'quarta',
-                                              groupValue: _radioValue,
-                                              onChanged: radioButtonChanges,
+                                            Column(
+                                              children: [
+                                                Radio(
+                                                  value: 'terca',
+                                                  groupValue: _radioValue,
+                                                  onChanged: radioButtonChanges,
+                                                ),
+                                                Text('Terca'),
+                                              ],
                                             ),
-                                            Text('quarta'),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            Radio(
-                                              value: 'quinta',
-                                              groupValue: _radioValue,
-                                              onChanged: radioButtonChanges,
+                                            Column(
+                                              children: [
+                                                Radio(
+                                                  value: 'quarta',
+                                                  groupValue: _radioValue,
+                                                  onChanged: radioButtonChanges,
+                                                ),
+                                                Text('quarta'),
+                                              ],
                                             ),
-                                            Text('quinta'),
-                                          ],
-                                        ),
-                                        Column(
-                                          children: [
-                                            Radio(
-                                              value: 'sexta',
-                                              groupValue: _radioValue,
-                                              onChanged: radioButtonChanges,
+                                            Column(
+                                              children: [
+                                                Radio(
+                                                  value: 'quinta',
+                                                  groupValue: _radioValue,
+                                                  onChanged: radioButtonChanges,
+                                                ),
+                                                Text('quinta'),
+                                              ],
                                             ),
-                                            Text('sexta'),
-                                          ],
+                                            Column(
+                                              children: [
+                                                Radio(
+                                                  value: 'sexta',
+                                                  groupValue: _radioValue,
+                                                  onChanged: radioButtonChanges,
+                                                ),
+                                                Text('sexta'),
+                                              ],
+                                            ),
+                                          ]),
                                         ),
-                                      ]),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 10,
+                                              left: 100,
+                                              right: 100),
+                                          child: ElevatedButton(
+                                            onPressed: _selectTime,
+                                            child: const Text(
+                                                'Selecionar as horas'),
+                                          ),
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10,
+                                                left: 100,
+                                                right: 100),
+                                            child: Row(
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: addUser, //addUser,
+                                                  child: const Text('Salvar'),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: Testar, //addUser,
+                                                  child: const Text('Testar'),
+                                                ),
+                                              ],
+                                            )),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 10, left: 100, right: 100),
-                                      child: ElevatedButton(
-                                        onPressed: _selectTime,
-                                        child:
-                                            const Text('Selecionar as horas'),
-                                      ),
-                                    ),
-                                    Padding(
-                                        padding: const EdgeInsets.only(
-                                            bottom: 10, left: 100, right: 100),
-                                        child: Row(
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: addUser, //addUser,
-                                              child: const Text('Salvar'),
-                                            ),
-                                            ElevatedButton(
-                                              onPressed: Testar, //addUser,
-                                              child: const Text('Testar'),
-                                            ),
-                                          ],
-                                        )),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ));
-              });
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+                            ),
+                          ],
+                        ));
+                  });
+            },
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ),
+        ));
   }
 }

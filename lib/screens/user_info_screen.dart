@@ -1,7 +1,11 @@
+import 'dart:math';
+
+import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lembre_zap/screens/sign_in_screen.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../firebase_options.dart';
 import '../res/custom_color.dart';
@@ -43,8 +47,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   }
 
   @override
-  void initState() async {
-    await Firebase.initializeApp(
+  void initState() {
+    Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     _user = widget._user;
@@ -54,6 +58,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var number;
+    var number_code;
+    late Country country;
+    var numbertxt =
+        MaskTextInputFormatter(mask: "+$number_code (##) # ####-####");
     return Scaffold(
       backgroundColor: CustomColors.firebaseNavy,
       appBar: AppBar(
@@ -66,7 +75,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
           padding: const EdgeInsets.only(
             left: 16.0,
             right: 16.0,
-            bottom: 20.0,
+            bottom: 180.0,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -122,52 +131,162 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               ),
               SizedBox(height: 24.0),
               Text(
-                'You are now signed in using your Google account. To sign out of your account click the "Sign Out" button below.',
+                'Cadastre seu número e teste !',
                 style: TextStyle(
                     color: CustomColors.firebaseGrey.withOpacity(0.8),
                     fontSize: 14,
                     letterSpacing: 0.2),
               ),
-              SizedBox(height: 16.0),
-              _isSigningOut
-                  ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                  : ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Colors.redAccent,
+              SizedBox(height: 8.0),
+              TextField(
+                controller: number,
+                inputFormatters: [numbertxt],
+                decoration: InputDecoration(
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(15),
+                    // ),
+                    // suffixIcon: const Icon(Icons.numbers),
+                    // prefix: Text("+" + number.text + "|"),
+                    labelText: 'Número',
+                    hintText: 'Digite seu numero'),
+              ),
+              SizedBox(height: 18.0),
+              Text(
+                '( ${_user.phoneNumber ?? ""} )',
+                style: TextStyle(
+                  color: CustomColors.firebaseOrange,
+                  fontSize: 15,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              SizedBox(height: 28.0),
+              ElevatedButton(
+                  onPressed: () {
+                    showCountryPicker(
+                      context: context,
+                      favorite: <String>['BR', 'US'],
+                      showPhoneCode: true,
+                      onSelect: (Country country_res) {
+                        setState(() {
+                          // number.text = "+" + country.phoneCode;
+                          // number_code = number.text;
+
+                          country = country_res;
+                        });
+                        print('Select country: ${country_res.displayName}');
+                      },
+                      countryListTheme: CountryListThemeData(
+                        backgroundColor: Colors.transparent,
+                        flagSize: 10,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(40.0),
+                          topRight: Radius.circular(40.0),
                         ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        inputDecoration: InputDecoration(
+                          labelText: 'Search',
+                          hintText: 'Start typing to search',
+                          prefixIcon: const Icon(Icons.search),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.transparent.withOpacity(0.2),
+                            ),
                           ),
                         ),
                       ),
-                      onPressed: () async {
-                        setState(() {
-                          _isSigningOut = true;
-                        });
-                        await Authentication.signOut(context: context);
-                        setState(() {
-                          _isSigningOut = false;
-                        });
-                        Navigator.of(context)
-                            .pushReplacement(_routeToSignInScreen());
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                    );
+                  },
+                  child: Icon(Icons.flag)),
+              SizedBox(height: 28.0),
+              ElevatedButton(
+                  // style: ButtonStyle(
+                  //   // backgroundColor: MaterialStateProperty.all(
+                  //   //   CustomColors.googleBackground,
+                  //   // ),
+                  //   // shape: MaterialStateProperty.all(),
+                  // ),
+                  onPressed: () async {
+                    setState(() {
+                      _isSigningOut = true;
+                      number_code = country.countryCode;
+                      var date = DateTime.now();
+                      var number_send = numbertxt.getUnmaskedText();
+
+                      var txt =
+                          "Envie de volta o seguinte código para esse chat: " +
+                              date.year.toString() +
+                              date.month.toString() +
+                              date.second.toString() +
+                              "-" +
+                              Random().nextInt(100).toString() +
+                              "-" +
+                              Random().nextInt(100).toString();
+                    });
+                    // Navigator.of(context).pushReplacement(_routeToSignInScreen());
+                  },
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.0, bottom: 3.0),
                         child: Text(
-                          'Sign Out',
+                          'Confirmar número do whatsapp !',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            letterSpacing: 2,
+                            // letterSpacing: 2,
                           ),
                         ),
                       ),
-                    ),
+                    ],
+                  )
+
+                  //     Column(
+                  //   children: [
+
+                  //     SizedBox(height: 16.0),
+                  //     _isSigningOut
+                  //         ? CircularProgressIndicator(
+                  //             valueColor:
+                  //                 AlwaysStoppedAnimation<Color>(Colors.white),
+                  //           )
+                  //         : ElevatedButton(
+                  //             style: ButtonStyle(
+                  //               backgroundColor: MaterialStateProperty.all(
+                  //                 Colors.redAccent,
+                  //               ),
+                  //               shape: MaterialStateProperty.all(
+                  //                 RoundedRectangleBorder(
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             onPressed: () async {
+                  //               setState(() {
+                  //                 _isSigningOut = true;
+                  //               });
+                  //               await Authentication.signOut(context: context);
+                  //               setState(() {
+                  //                 _isSigningOut = false;
+                  //               });
+                  //               Navigator.of(context)
+                  //                   .pushReplacement(_routeToSignInScreen());
+                  //             },
+                  //             child: Padding(
+                  //               padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                  //               child: Text(
+                  //                 'Desconectar conta.',
+                  //                 style: TextStyle(
+                  //                   fontSize: 16,
+                  //                   fontWeight: FontWeight.bold,
+                  //                   color: Colors.white,
+                  //                   // letterSpacing: 2,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //   ],
+                  // )
+                  )
             ],
           ),
         ),
