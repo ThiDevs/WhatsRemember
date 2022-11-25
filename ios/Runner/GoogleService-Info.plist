@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>9966309706-a68hnovjtnusdeern4iqklc9aq4mnpvp.apps.googleusercontent.com</string>
+	<string>9966309706-q57vch5dbgnk45pqspjrm392rdrvre7r.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.9966309706-a68hnovjtnusdeern4iqklc9aq4mnpvp</string>
+	<string>com.googleusercontent.apps.9966309706-q57vch5dbgnk45pqspjrm392rdrvre7r</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>9966309706-d4c8hmvtml9pr0ag5uu8vuc85s1tb6pj.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyA7-tkHYNJ-Lz3uJdexuZnALRsMmXVsPck</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ThiagoAlves.RememberZap</string>
+	<string>com.thidevs.whatsremember</string>
 	<key>PROJECT_ID</key>
 	<string>rememberzap-f4900</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:9966309706:ios:b4140dd84faf455dcbb1b3</string>
+	<string>1:9966309706:ios:538b40e4f54f071fcbb1b3</string>
 </dict>
 </plist>
