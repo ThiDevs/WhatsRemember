@@ -32,7 +32,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(-1.0, 0.0);
+        var begin = const Offset(-1.0, 0.0);
         var end = Offset.zero;
         var curve = Curves.ease;
 
@@ -61,7 +61,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   Widget build(BuildContext context) {
     var number = TextEditingController();
 
-    var number_code;
     late Country country;
     var numbertxt = MaskTextInputFormatter(mask: "+## (##) # ####-####");
     return Scaffold(
@@ -105,7 +104,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         ),
                       ),
                     ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Text(
                 'Hello',
                 style: TextStyle(
@@ -113,7 +112,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   fontSize: 26,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 _user.displayName!,
                 style: TextStyle(
@@ -121,7 +120,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   fontSize: 26,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Text(
                 '( ${_user.email!} )',
                 style: TextStyle(
@@ -130,7 +129,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   letterSpacing: 0.5,
                 ),
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               Text(
                 'Cadastre seu número e teste !',
                 style: TextStyle(
@@ -138,11 +137,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     fontSize: 14,
                     letterSpacing: 0.2),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               TextField(
                 controller: number,
                 inputFormatters: [numbertxt],
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     // border: OutlineInputBorder(
                     //   borderRadius: BorderRadius.circular(15),
                     // ),
@@ -151,7 +150,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     labelText: 'Número',
                     hintText: 'Digite seu numero'),
               ),
-              SizedBox(height: 18.0),
+              const SizedBox(height: 18.0),
               Text(
                 '( ${_user.phoneNumber ?? ""} )',
                 style: TextStyle(
@@ -187,7 +186,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     var request = http.Request(
                         'GET',
                         Uri.parse(
-                            'https://9765-2804-14d-ae83-87cc-ad-2b2-47a1-d4a3.sa.ngrok.io/sendMessage/$number_send/$txt'));
+                            'https://19f3-179-217-50-237.sa.ngrok.io/sendMessage/$number_send/$txt'));
 
                     http.StreamedResponse response = await request.send();
 
@@ -200,7 +199,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   },
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'Confirmar número do whatsapp !',
                         style: TextStyle(
                           fontSize: 16,
@@ -211,7 +210,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       ),
                     ],
                   )),
-              SizedBox(height: 28.0),
+              const SizedBox(height: 28.0),
               ElevatedButton(
                   onPressed: () {
                     showCountryPicker(
@@ -222,7 +221,6 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                         setState(() {
                           // number.text = "+" + country.phoneCode;
                           // number_code = number.text;
-                          number_code = "+" + country_res.phoneCode;
                           country = country_res;
                         });
                         print('Select country: ${country_res.displayName}');
@@ -247,8 +245,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                       ),
                     );
                   },
-                  child: Icon(Icons.flag)),
-              SizedBox(height: 8.0),
+                  child: const Icon(Icons.flag)),
+              const SizedBox(height: 8.0),
             ],
           ),
         ),
