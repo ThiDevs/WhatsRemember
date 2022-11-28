@@ -227,13 +227,14 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
                       child: InkWell(
                         onTap: () async {
-                          await DatePicker.showTimePicker(
+                          await DatePicker.showDatePicker(
                             context,
                             showTitleActions: true,
                             onConfirm: (date) {
                               setState(() => datePicked1 = date);
                             },
                             currentTime: getCurrentTimestamp,
+                            minTime: getCurrentTimestamp,
                             locale: LocaleType.values.firstWhere(
                               (l) =>
                                   l.name ==
