@@ -34,19 +34,34 @@ class _$AlarmesRecordSerializer implements StructuredSerializer<AlarmesRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.data;
+    value = object.startDate;
     if (value != null) {
       result
-        ..add('data')
+        ..add('start_date')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
     }
-    value = object.hora;
+    value = object.endDate;
     if (value != null) {
       result
-        ..add('hora')
+        ..add('end_date')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(DateTime)));
+    }
+    value = object.hour;
+    if (value != null) {
+      result
+        ..add('hour')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.days;
+    if (value != null) {
+      result
+        ..add('days')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(BuiltList, const [const FullType(String)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -79,13 +94,23 @@ class _$AlarmesRecordSerializer implements StructuredSerializer<AlarmesRecord> {
           result.message = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'data':
-          result.data = serializers.deserialize(value,
+        case 'start_date':
+          result.startDate = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
           break;
-        case 'hora':
-          result.hora = serializers.deserialize(value,
+        case 'end_date':
+          result.endDate = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'hour':
+          result.hour = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'days':
+          result.days.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -106,9 +131,13 @@ class _$AlarmesRecord extends AlarmesRecord {
   @override
   final String? message;
   @override
-  final DateTime? data;
+  final DateTime? startDate;
   @override
-  final DateTime? hora;
+  final DateTime? endDate;
+  @override
+  final DateTime? hour;
+  @override
+  final BuiltList<String>? days;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -116,7 +145,13 @@ class _$AlarmesRecord extends AlarmesRecord {
       (new AlarmesRecordBuilder()..update(updates))._build();
 
   _$AlarmesRecord._(
-      {this.number, this.message, this.data, this.hora, this.ffRef})
+      {this.number,
+      this.message,
+      this.startDate,
+      this.endDate,
+      this.hour,
+      this.days,
+      this.ffRef})
       : super._();
 
   @override
@@ -132,16 +167,24 @@ class _$AlarmesRecord extends AlarmesRecord {
     return other is AlarmesRecord &&
         number == other.number &&
         message == other.message &&
-        data == other.data &&
-        hora == other.hora &&
+        startDate == other.startDate &&
+        endDate == other.endDate &&
+        hour == other.hour &&
+        days == other.days &&
         ffRef == other.ffRef;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, number.hashCode), message.hashCode), data.hashCode),
-            hora.hashCode),
+        $jc(
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, number.hashCode), message.hashCode),
+                        startDate.hashCode),
+                    endDate.hashCode),
+                hour.hashCode),
+            days.hashCode),
         ffRef.hashCode));
   }
 
@@ -150,8 +193,10 @@ class _$AlarmesRecord extends AlarmesRecord {
     return (newBuiltValueToStringHelper(r'AlarmesRecord')
           ..add('number', number)
           ..add('message', message)
-          ..add('data', data)
-          ..add('hora', hora)
+          ..add('startDate', startDate)
+          ..add('endDate', endDate)
+          ..add('hour', hour)
+          ..add('days', days)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -169,13 +214,21 @@ class AlarmesRecordBuilder
   String? get message => _$this._message;
   set message(String? message) => _$this._message = message;
 
-  DateTime? _data;
-  DateTime? get data => _$this._data;
-  set data(DateTime? data) => _$this._data = data;
+  DateTime? _startDate;
+  DateTime? get startDate => _$this._startDate;
+  set startDate(DateTime? startDate) => _$this._startDate = startDate;
 
-  DateTime? _hora;
-  DateTime? get hora => _$this._hora;
-  set hora(DateTime? hora) => _$this._hora = hora;
+  DateTime? _endDate;
+  DateTime? get endDate => _$this._endDate;
+  set endDate(DateTime? endDate) => _$this._endDate = endDate;
+
+  DateTime? _hour;
+  DateTime? get hour => _$this._hour;
+  set hour(DateTime? hour) => _$this._hour = hour;
+
+  ListBuilder<String>? _days;
+  ListBuilder<String> get days => _$this._days ??= new ListBuilder<String>();
+  set days(ListBuilder<String>? days) => _$this._days = days;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -190,8 +243,10 @@ class AlarmesRecordBuilder
     if ($v != null) {
       _number = $v.number;
       _message = $v.message;
-      _data = $v.data;
-      _hora = $v.hora;
+      _startDate = $v.startDate;
+      _endDate = $v.endDate;
+      _hour = $v.hour;
+      _days = $v.days?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -213,13 +268,28 @@ class AlarmesRecordBuilder
   AlarmesRecord build() => _build();
 
   _$AlarmesRecord _build() {
-    final _$result = _$v ??
-        new _$AlarmesRecord._(
-            number: number,
-            message: message,
-            data: data,
-            hora: hora,
-            ffRef: ffRef);
+    _$AlarmesRecord _$result;
+    try {
+      _$result = _$v ??
+          new _$AlarmesRecord._(
+              number: number,
+              message: message,
+              startDate: startDate,
+              endDate: endDate,
+              hour: hour,
+              days: _days?.build(),
+              ffRef: ffRef);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'days';
+        _days?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'AlarmesRecord', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

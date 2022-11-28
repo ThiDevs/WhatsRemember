@@ -1,4 +1,6 @@
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_ad_banner.dart';
+import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -21,6 +23,36 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print('FloatingActionButton pressed ...');
+        },
+        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+        elevation: 8,
+        child: FlutterFlowIconButton(
+          borderColor: Colors.transparent,
+          borderRadius: 30,
+          borderWidth: 1,
+          buttonSize: 60,
+          icon: Icon(
+            Icons.add,
+            color: FlutterFlowTheme.of(context).primaryText,
+            size: 30,
+          ),
+          onPressed: () async {
+            context.pushNamed(
+              'AddAlarm',
+              extra: <String, dynamic>{
+                kTransitionInfoKey: TransitionInfo(
+                  hasTransition: true,
+                  transitionType: PageTransitionType.bottomToTop,
+                  duration: Duration(milliseconds: 2),
+                ),
+              },
+            );
+          },
+        ),
+      ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: false,
@@ -48,12 +80,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                 child: Container(
                   width: double.infinity,
-                  height: 100,
+                  height: 410,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
-                  child: FutureBuilder<List<AlarmesRecord>>(
-                    future: queryAlarmesRecordOnce(),
+                  child: StreamBuilder<List<AlarmesRecord>>(
+                    stream: queryAlarmesRecord(),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
                       if (!snapshot.hasData) {
@@ -71,7 +103,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           snapshot.data!;
                       return ListView.builder(
                         padding: EdgeInsets.zero,
-                        shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: listViewAlarmesRecordList.length,
                         itemBuilder: (context, listViewIndex) {
@@ -123,10 +154,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Text(
-                                                  FFLocalizations.of(context)
-                                                      .getText(
-                                                    'hxtxz3lm' /* +55 27 9 88710078 */,
-                                                  ),
+                                                  listViewAlarmesRecord.number!,
                                                   textAlign: TextAlign.start,
                                                   style: FlutterFlowTheme.of(
                                                           context)
@@ -141,10 +169,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   padding: EdgeInsetsDirectional
                                                       .fromSTEB(0, 5, 0, 0),
                                                   child: AutoSizeText(
-                                                    FFLocalizations.of(context)
-                                                        .getText(
-                                                      '21bi5vbm' /* Messagem teste bla bla bla bla */,
-                                                    ),
+                                                    listViewAlarmesRecord
+                                                        .message!,
                                                     textAlign:
                                                         TextAlign.justify,
                                                     maxLines: 40,
@@ -170,7 +196,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                   child: Text(
                                                     FFLocalizations.of(context)
                                                         .getText(
-                                                      'mi3srwmg' /* 09:15 recorrente todos os dias */,
+                                                      'rur9mv1p' /* 09:15 recorrente todos os dias */,
                                                     ),
                                                     style: FlutterFlowTheme.of(
                                                             context)
@@ -193,6 +219,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     },
                   ),
                 ),
+              ),
+              FlutterFlowAdBanner(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                showsTestAd: true,
+                androidAdUnitID: 'ca-app-pub-4653575622321119/7662094560',
               ),
             ],
           ),
