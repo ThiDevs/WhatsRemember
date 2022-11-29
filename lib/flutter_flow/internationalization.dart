@@ -104,8 +104,8 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'pt': 'Phone number',
       'en': 'phone number',
     },
-    'qx945ygh': {
-      'pt': 'Verificar número',
+    'wnnodhqn': {
+      'pt': 'Verificar Numero',
       'en': '',
     },
     'n242zr9o': {

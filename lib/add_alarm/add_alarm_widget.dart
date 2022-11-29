@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_checkbox_group.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -19,7 +20,7 @@ class AddAlarmWidget extends StatefulWidget {
 }
 
 class _AddAlarmWidgetState extends State<AddAlarmWidget> {
-  ApiCallResponse? apiResult7i9;
+  ApiCallResponse? apiResultkvx;
   TextEditingController? phoneNumberController;
   TextEditingController? messageController;
   DateTime? datePicked1;
@@ -142,58 +143,70 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                child: InkWell(
-                  onTap: () async {
-                    apiResult7i9 =
-                        await WhatsRememberAPIGroup.verifiqueNumberCall.call(
-                      number: phoneNumberController!.text,
+              FFButtonWidget(
+                onPressed: () async {
+                  var _shouldSetState = false;
+                  apiResultkvx =
+                      await WhatsRememberAPIGroup.verifiqueNumberCall.call(
+                    number: phoneNumberController!.text,
+                  );
+                  _shouldSetState = true;
+                  if ((apiResultkvx?.succeeded ?? true)) {
+                    await showDialog(
+                      context: context,
+                      builder: (alertDialogContext) {
+                        return AlertDialog(
+                          title: Text('Sucesso'),
+                          content: Text('Sucesso'),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(alertDialogContext),
+                              child: Text('Ok'),
+                            ),
+                          ],
+                        );
+                      },
                     );
-                    if ((apiResult7i9?.succeeded ?? true)) {
-                      await showDialog(
-                        context: context,
-                        builder: (alertDialogContext) {
-                          return AlertDialog(
-                            title: Text('Sucesso !'),
-                            content:
-                                Text('Seu número foi verificado com sucesso !'),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext),
-                                child: Text('Ok'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      await showDialog(
-                        context: context,
-                        builder: (alertDialogContext) {
-                          return AlertDialog(
-                            title: Text('Fail'),
-                            content:
-                                Text('Não foi possivel verificar seu número.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext),
-                                child: Text('Ok'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
+                    if (_shouldSetState) setState(() {});
+                    return;
+                  } else {
+                    await showDialog(
+                      context: context,
+                      builder: (alertDialogContext) {
+                        return AlertDialog(
+                          title: Text('Fail'),
+                          content: Text('Fail :/'),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(alertDialogContext),
+                              child: Text('Ok'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    if (_shouldSetState) setState(() {});
+                    return;
+                  }
 
-                    setState(() {});
-                  },
-                  child: Text(
-                    'Verificar número',
-                    style: FlutterFlowTheme.of(context).bodyText1,
+                  if (_shouldSetState) setState(() {});
+                },
+                text: 'Verificar Numero',
+                options: FFButtonOptions(
+                  width: 130,
+                  height: 40,
+                  color: FlutterFlowTheme.of(context).primaryColor,
+                  textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                        fontFamily: 'Poppins',
+                        color: Colors.white,
+                      ),
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                    width: 1,
                   ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
               Padding(
