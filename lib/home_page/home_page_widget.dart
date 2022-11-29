@@ -1,5 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
+import '../flutter_flow/flutter_flow_ad_banner.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -482,6 +483,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         },
                       );
                     },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
+                  child: FlutterFlowAdBanner(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    showsTestAd: false,
+                    iOSAdUnitID: 'ca-app-pub-4653575622321119/6534282512',
+                    androidAdUnitID: 'ca-app-pub-4653575622321119/7662094560',
                   ),
                 ),
               ),

@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/admob_util.dart' as admob;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -27,6 +28,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
   DateTime? datePicked2;
   List<String>? daysOptionsValues;
   DateTime? datePicked3;
+  bool? interstitialAdSuccess;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -518,6 +520,13 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                       'days': daysOptionsValues,
                     };
                     await AlarmesRecord.collection.doc().set(alarmesCreateData);
+
+                    admob.loadInterstitialAd(
+                      "ca-app-pub-4653575622321119/2492177292",
+                      "ca-app-pub-4653575622321119/1535669915",
+                      true,
+                    );
+
                     await showDialog(
                       context: context,
                       builder: (alertDialogContext) {
@@ -534,6 +543,12 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                         );
                       },
                     );
+
+                    interstitialAdSuccess = await admob.showInterstitialAd();
+
+                    context.pop();
+
+                    setState(() {});
                   },
                   child: Container(
                     width: double.infinity,
