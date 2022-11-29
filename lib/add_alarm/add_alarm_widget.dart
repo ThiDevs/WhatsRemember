@@ -141,79 +141,94 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                   ),
                 ),
               ),
-              FFButtonWidget(
-                onPressed: () async {
-                  var _shouldSetState = false;
-                  apiResultkvx =
-                      await WhatsRememberAPIGroup.verifiqueNumberCall.call(
-                    number: phoneNumberController!.text,
-                  );
-                  _shouldSetState = true;
-                  if ((apiResultkvx?.succeeded ?? true)) {
-                    await showDialog(
-                      context: context,
-                      builder: (alertDialogContext) {
-                        return AlertDialog(
-                          title: Text('Sucesso'),
-                          content: Text('Sucesso'),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(alertDialogContext),
-                              child: Text('Ok'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                    if (_shouldSetState) setState(() {});
-                    return;
-                  } else {
-                    await showDialog(
-                      context: context,
-                      builder: (alertDialogContext) {
-                        return AlertDialog(
-                          title: Text('Fail'),
-                          content: Text('Fail :/'),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(alertDialogContext),
-                              child: Text('Ok'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                    if (_shouldSetState) setState(() {});
-                    return;
-                  }
-
-                  if (_shouldSetState) setState(() {});
-                },
-                text: FFLocalizations.of(context).getText(
-                  '7wndjb1l' /* Verificar Numero */,
-                ),
-                options: FFButtonOptions(
-                  width: 130,
-                  height: 40,
-                  color: FlutterFlowTheme.of(context).primaryColor,
-                  textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                        fontFamily: 'Lexend Exa',
-                        color: Colors.white,
-                      ),
-                  borderSide: BorderSide(
-                    color: Colors.transparent,
-                    width: 1,
+              Align(
+                alignment: AlignmentDirectional(0, 0.1),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.04,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
-                  borderRadius: BorderRadius.circular(8),
+                  child: Align(
+                    alignment: AlignmentDirectional(0, -0.1),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        var _shouldSetState = false;
+                        apiResultkvx = await WhatsRememberAPIGroup
+                            .verifiqueNumberCall
+                            .call(
+                          number: phoneNumberController!.text,
+                        );
+                        _shouldSetState = true;
+                        if ((apiResultkvx?.succeeded ?? true)) {
+                          await showDialog(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: Text('Sucesso'),
+                                content: Text('Sucesso'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext),
+                                    child: Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          if (_shouldSetState) setState(() {});
+                          return;
+                        } else {
+                          await showDialog(
+                            context: context,
+                            builder: (alertDialogContext) {
+                              return AlertDialog(
+                                title: Text('Fail'),
+                                content: Text('Fail :/'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(alertDialogContext),
+                                    child: Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          if (_shouldSetState) setState(() {});
+                          return;
+                        }
+
+                        if (_shouldSetState) setState(() {});
+                      },
+                      text: FFLocalizations.of(context).getText(
+                        '7wndjb1l' /* Verificar Numero */,
+                      ),
+                      options: FFButtonOptions(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: FlutterFlowTheme.of(context).primaryColor,
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Lexend Exa',
+                                  color: Colors.white,
+                                ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                 child: Container(
                   width: double.infinity,
-                  height: 70,
+                  height: 90,
                   decoration: BoxDecoration(),
                   child: TextFormField(
                     controller: messageController,

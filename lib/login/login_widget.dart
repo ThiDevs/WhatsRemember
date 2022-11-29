@@ -1,3 +1,4 @@
+import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -71,7 +72,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                           alignment: AlignmentDirectional(0, 0),
                           child: FFButtonWidget(
                             onPressed: () async {
-                              context.pushNamed('HomePage');
+                              GoRouter.of(context).prepareAuthEvent();
+                              final user = await signInWithGoogle(context);
+                              if (user == null) {
+                                return;
+                              }
+
+                              context.pushNamedAuth('HomePage', mounted);
                             },
                             text: FFLocalizations.of(context).getText(
                               '4pgx61sd' /* Sign in with Google */,
