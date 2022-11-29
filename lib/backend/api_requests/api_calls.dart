@@ -12,7 +12,7 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
 class WhatsRememberAPIGroup {
   static String baseUrl =
-      'https://b26e-2804-14d-ae83-87cc-ed78-324e-b28f-d6ed.sa.ngrok.io/';
+      'https://b26e-2804-14d-ae83-87cc-ed78-324e-b28f-d6ed.sa.ngrok.io';
   static Map<String, String> headers = {};
   static VerifiqueNumberCall verifiqueNumberCall = VerifiqueNumberCall();
 }
