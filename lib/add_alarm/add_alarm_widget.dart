@@ -72,22 +72,16 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                 child: Container(
                   width: double.infinity,
-                  height: 50,
+                  height: 70,
                   decoration: BoxDecoration(),
                   child: TextFormField(
                     controller: phoneNumberController,
                     obscureText: false,
                     decoration: InputDecoration(
                       labelText: FFLocalizations.of(context).getText(
-                        'h8evsuap' /* Phone Number */,
+                        'h8evsuap' /* Phone number */,
                       ),
-                      labelStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Color(0xFF57636C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
+                      labelStyle: FlutterFlowTheme.of(context).bodyText2,
                       hintStyle:
                           FlutterFlowTheme.of(context).bodyText1.override(
                                 fontFamily: 'Lexend Deca',
@@ -111,14 +105,14 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                       ),
                       errorBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color(0x00000000),
+                          color: FlutterFlowTheme.of(context).alternate,
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(40),
                       ),
                       focusedErrorBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color(0x00000000),
+                          color: FlutterFlowTheme.of(context).alternate,
                           width: 2,
                         ),
                         borderRadius: BorderRadius.circular(40),
@@ -129,15 +123,15 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                           EdgeInsetsDirectional.fromSTEB(24, 24, 20, 24),
                       prefixIcon: Icon(
                         Icons.phone_iphone_outlined,
+                        color: FlutterFlowTheme.of(context).primaryText,
                       ),
                     ),
                     style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Deca',
-                          color: Color(0xFF1D2429),
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Lexend Exa',
                         ),
+                    textAlign: TextAlign.start,
                     maxLines: null,
+                    keyboardType: TextInputType.phone,
                   ),
                 ),
               ),
@@ -145,7 +139,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 20),
                 child: Container(
                   width: double.infinity,
-                  height: 50,
+                  height: 70,
                   decoration: BoxDecoration(),
                   child: TextFormField(
                     controller: messageController,
@@ -154,13 +148,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                       labelText: FFLocalizations.of(context).getText(
                         'n242zr9o' /* Message send */,
                       ),
-                      labelStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Color(0xFF57636C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
+                      labelStyle: FlutterFlowTheme.of(context).bodyText2,
                       hintStyle:
                           FlutterFlowTheme.of(context).bodyText1.override(
                                 fontFamily: 'Lexend Deca',
@@ -259,8 +247,14 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  FFLocalizations.of(context).getText(
-                                    'xyp493ie' /* Start Date */,
+                                  valueOrDefault<String>(
+                                    dateTimeFormat(
+                                      'yMMMd',
+                                      datePicked1,
+                                      locale: FFLocalizations.of(context)
+                                          .languageCode,
+                                    ),
+                                    'Start Date',
                                   ),
                                   style: FlutterFlowTheme.of(context)
                                       .subtitle2
@@ -318,8 +312,14 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                FFLocalizations.of(context).getText(
-                                  'g1qcki2c' /* End Date */,
+                                valueOrDefault<String>(
+                                  dateTimeFormat(
+                                    'yMMMd',
+                                    datePicked2,
+                                    locale: FFLocalizations.of(context)
+                                        .languageCode,
+                                  ),
+                                  'End Date',
                                 ),
                                 style: FlutterFlowTheme.of(context)
                                     .subtitle2
@@ -347,7 +347,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
                 child: Container(
                   width: 280,
-                  height: 250,
+                  height: 190,
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                   ),
@@ -399,8 +399,13 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                         },
                       ),
                       Text(
-                        FFLocalizations.of(context).getText(
-                          'k5s096kr' /* Selecionar horario */,
+                        valueOrDefault<String>(
+                          dateTimeFormat(
+                            'Hm',
+                            datePicked3,
+                            locale: FFLocalizations.of(context).languageCode,
+                          ),
+                          'Selecionar horario',
                         ),
                         style: FlutterFlowTheme.of(context).bodyText1,
                       ),

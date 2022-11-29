@@ -72,93 +72,81 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
   {
     '4pgx61sd': {
       'pt': 'Sign in with Google',
-      'en': '',
+      'en': 'Sign in with Google',
     },
     'wan8ie11': {
       'pt': 'WhatsRemember',
-      'en': '',
+      'en': 'WhatsRemember',
     },
     'vr4kkbak': {
       'pt': 'Home',
-      'en': '',
+      'en': 'Home',
     },
   },
   // HomePage
   {
     'rur9mv1p': {
       'pt': '09:15 recorrente todos os dias',
-      'en': '',
+      'en': '09:15 recurring every day',
     },
     '6mx7ta2p': {
       'pt': 'WhatsRemember',
-      'en': '',
+      'en': 'WhatsRemember',
     },
     'islk4yh7': {
       'pt': 'Home',
-      'en': '',
+      'en': 'Home',
     },
   },
   // AddAlarm
   {
     'h8evsuap': {
-      'pt': 'Phone Number',
-      'en': '',
+      'pt': 'Phone number',
+      'en': 'phone number',
     },
     'n242zr9o': {
       'pt': 'Message send',
-      'en': '',
-    },
-    'xyp493ie': {
-      'pt': 'Start Date',
-      'en': '',
-    },
-    'g1qcki2c': {
-      'pt': 'End Date',
-      'en': '',
+      'en': 'message send',
     },
     'dlkgj9at': {
       'pt': 'Segunda',
-      'en': '',
+      'en': 'Second',
     },
     'biod0jr6': {
       'pt': 'Terça',
-      'en': '',
+      'en': 'Tuesday',
     },
     'kvkidw1b': {
       'pt': 'Quarta',
-      'en': '',
+      'en': 'Fourth',
     },
     'g69ejeei': {
       'pt': 'Quinta',
-      'en': '',
+      'en': 'Fifth',
     },
     '0qmh9qz2': {
       'pt': 'Sexta',
-      'en': '',
+      'en': 'friday',
     },
     'cy5st06r': {
       'pt': 'Sábado',
-      'en': '',
+      'en': 'Saturday',
     },
     'ibbrod2u': {
       'pt': 'Domingo',
-      'en': '',
-    },
-    'k5s096kr': {
-      'pt': 'Selecionar horario',
-      'en': '',
+      'en': 'Sunday',
     },
     '66rd6yzs': {
       'pt': 'Salvar',
-      'en': '',
+      'en': 'To save',
     },
     '78lmpjjy': {
       'pt': 'Adicionar novo alarme',
-      'en': '',
+      'en': 'add new alarm',
     },
     'g9dcme2z': {
       'pt': 'Home',
-      'en': '',
+      'en': 'Home',
     },
   },
   // Miscellaneous
