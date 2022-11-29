@@ -1,4 +1,5 @@
 import '../auth/auth_util.dart';
+import '../backend/api_requests/api_calls.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_checkbox_group.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -18,10 +19,11 @@ class AddAlarmWidget extends StatefulWidget {
 }
 
 class _AddAlarmWidgetState extends State<AddAlarmWidget> {
+  ApiCallResponse? apiResult7i9;
+  TextEditingController? phoneNumberController;
+  TextEditingController? messageController;
   DateTime? datePicked1;
   DateTime? datePicked2;
-  TextEditingController? messageController;
-  TextEditingController? phoneNumberController;
   List<String>? daysOptionsValues;
   DateTime? datePicked3;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -74,69 +76,128 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                   width: double.infinity,
                   height: 70,
                   decoration: BoxDecoration(),
-                  child: TextFormField(
-                    controller: phoneNumberController,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      labelText: FFLocalizations.of(context).getText(
-                        'h8evsuap' /* Phone number */,
-                      ),
-                      labelStyle: FlutterFlowTheme.of(context).bodyText2,
-                      hintStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Lexend Deca',
-                                color: Color(0xFF57636C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFFDBE2E7),
-                          width: 2,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      TextFormField(
+                        controller: phoneNumberController,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          labelText: FFLocalizations.of(context).getText(
+                            'h8evsuap' /* Phone number */,
+                          ),
+                          labelStyle: FlutterFlowTheme.of(context).bodyText2,
+                          hintStyle:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Color(0xFF57636C),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFFDBE2E7),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFFDBE2E7),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          focusedErrorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: FlutterFlowTheme.of(context).alternate,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding:
+                              EdgeInsetsDirectional.fromSTEB(24, 24, 20, 24),
+                          prefixIcon: Icon(
+                            Icons.phone_iphone_outlined,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(40),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Lexend Exa',
+                            ),
+                        textAlign: TextAlign.start,
+                        maxLines: null,
+                        keyboardType: TextInputType.phone,
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFFDBE2E7),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      errorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      focusedErrorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: FlutterFlowTheme.of(context).alternate,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding:
-                          EdgeInsetsDirectional.fromSTEB(24, 24, 20, 24),
-                      prefixIcon: Icon(
-                        Icons.phone_iphone_outlined,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                      ),
-                    ),
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Lexend Exa',
-                        ),
-                    textAlign: TextAlign.start,
-                    maxLines: null,
-                    keyboardType: TextInputType.phone,
+                    ],
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 20),
+                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                child: InkWell(
+                  onTap: () async {
+                    apiResult7i9 =
+                        await WhatsRememberAPIGroup.verifiqueNumberCall.call(
+                      number: phoneNumberController!.text,
+                    );
+                    if ((apiResult7i9?.succeeded ?? true)) {
+                      await showDialog(
+                        context: context,
+                        builder: (alertDialogContext) {
+                          return AlertDialog(
+                            title: Text('Sucesso !'),
+                            content:
+                                Text('Seu número foi verificado com sucesso !'),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(alertDialogContext),
+                                child: Text('Ok'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      await showDialog(
+                        context: context,
+                        builder: (alertDialogContext) {
+                          return AlertDialog(
+                            title: Text('Fail'),
+                            content:
+                                Text('Não foi possivel verificar seu número.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(alertDialogContext),
+                                child: Text('Ok'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+
+                    setState(() {});
+                  },
+                  child: Text(
+                    'Verificar número',
+                    style: FlutterFlowTheme.of(context).bodyText1,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
                 child: Container(
                   width: double.infinity,
                   height: 70,
@@ -429,6 +490,22 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                       'days': daysOptionsValues,
                     };
                     await AlarmesRecord.collection.doc().set(alarmesCreateData);
+                    await showDialog(
+                      context: context,
+                      builder: (alertDialogContext) {
+                        return AlertDialog(
+                          title: Text('Sucesso.'),
+                          content: Text('Seu alarme foi salvo com sucesso.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.pop(alertDialogContext),
+                              child: Text('Ok'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: Container(
                     width: double.infinity,
