@@ -75,7 +75,7 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': 'Sign in with Google',
     },
     'wan8ie11': {
-      'pt': 'WhatsRemember',
+      'pt': 'WhatsRemember - Login',
       'en': 'WhatsRemember',
     },
     'vr4kkbak': {
@@ -85,10 +85,6 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
   },
   // HomePage
   {
-    'rur9mv1p': {
-      'pt': '09:15 recorrente todos os dias',
-      'en': '09:15 recurring every day',
-    },
     '6mx7ta2p': {
       'pt': 'WhatsRemember',
       'en': 'WhatsRemember',
@@ -104,7 +100,7 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'pt': 'Phone number',
       'en': 'phone number',
     },
-    'wnnodhqn': {
+    '7wndjb1l': {
       'pt': 'Verificar Numero',
       'en': '',
     },

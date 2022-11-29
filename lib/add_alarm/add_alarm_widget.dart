@@ -56,7 +56,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
             '78lmpjjy' /* Adicionar novo alarme */,
           ),
           style: FlutterFlowTheme.of(context).title2.override(
-                fontFamily: 'Poppins',
+                fontFamily: 'Lexend Exa',
                 color: Colors.white,
                 fontSize: 22,
               ),
@@ -132,9 +132,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                             color: FlutterFlowTheme.of(context).primaryText,
                           ),
                         ),
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Lexend Exa',
-                            ),
+                        style: FlutterFlowTheme.of(context).bodyText1,
                         textAlign: TextAlign.start,
                         maxLines: null,
                         keyboardType: TextInputType.phone,
@@ -193,13 +191,15 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
 
                   if (_shouldSetState) setState(() {});
                 },
-                text: 'Verificar Numero',
+                text: FFLocalizations.of(context).getText(
+                  '7wndjb1l' /* Verificar Numero */,
+                ),
                 options: FFButtonOptions(
                   width: 130,
                   height: 40,
                   color: FlutterFlowTheme.of(context).primaryColor,
                   textStyle: FlutterFlowTheme.of(context).subtitle2.override(
-                        fontFamily: 'Poppins',
+                        fontFamily: 'Lexend Exa',
                         color: Colors.white,
                       ),
                   borderSide: BorderSide(
@@ -546,7 +546,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                           style: FlutterFlowTheme.of(context)
                               .bodyText1
                               .override(
-                                fontFamily: 'Poppins',
+                                fontFamily: 'Lexend Exa',
                                 color:
                                     FlutterFlowTheme.of(context).primaryBtnText,
                               ),

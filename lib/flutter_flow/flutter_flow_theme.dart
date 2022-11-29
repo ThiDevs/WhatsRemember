@@ -74,51 +74,51 @@ class ThemeTypography extends Typography {
 
   final FlutterFlowTheme theme;
 
-  String get title1Family => 'Poppins';
+  String get title1Family => 'Lexend Exa';
   TextStyle get title1 => GoogleFonts.getFont(
-        'Poppins',
+        'Lexend Exa',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 24,
       );
-  String get title2Family => 'Poppins';
+  String get title2Family => 'Lexend Exa';
   TextStyle get title2 => GoogleFonts.getFont(
-        'Poppins',
+        'Lexend Exa',
         color: theme.secondaryText,
         fontWeight: FontWeight.w600,
         fontSize: 22,
       );
-  String get title3Family => 'Poppins';
+  String get title3Family => 'Lexend Exa';
   TextStyle get title3 => GoogleFonts.getFont(
-        'Poppins',
+        'Lexend Exa',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 20,
       );
-  String get subtitle1Family => 'Poppins';
+  String get subtitle1Family => 'Lexend Exa';
   TextStyle get subtitle1 => GoogleFonts.getFont(
-        'Poppins',
+        'Lexend Exa',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 18,
       );
-  String get subtitle2Family => 'Poppins';
+  String get subtitle2Family => 'Lexend Exa';
   TextStyle get subtitle2 => GoogleFonts.getFont(
-        'Poppins',
+        'Lexend Exa',
         color: theme.secondaryText,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       );
-  String get bodyText1Family => 'Poppins';
+  String get bodyText1Family => 'Lexend Exa';
   TextStyle get bodyText1 => GoogleFonts.getFont(
-        'Poppins',
+        'Lexend Exa',
         color: theme.primaryText,
         fontWeight: FontWeight.w600,
         fontSize: 14,
       );
-  String get bodyText2Family => 'Poppins';
+  String get bodyText2Family => 'Lexend Exa';
   TextStyle get bodyText2 => GoogleFonts.getFont(
-        'Poppins',
+        'Lexend Exa',
         color: theme.secondaryText,
         fontWeight: FontWeight.w600,
         fontSize: 14,

@@ -18,16 +18,16 @@ class _LoginWidgetState extends State<LoginWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      backgroundColor: FlutterFlowTheme.of(context).primaryText,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: false,
         title: Text(
           FFLocalizations.of(context).getText(
-            'wan8ie11' /* WhatsRemember */,
+            'wan8ie11' /* WhatsRemember - Login */,
           ),
           style: FlutterFlowTheme.of(context).title2.override(
-                fontFamily: 'Poppins',
+                fontFamily: 'Lexend Exa',
                 color: Colors.white,
                 fontSize: 22,
               ),
@@ -42,60 +42,79 @@ class _LoginWidgetState extends State<LoginWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 200, 0, 0),
+                child: Container(
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
               Align(
                 alignment: AlignmentDirectional(0, 0),
-                child: Container(
-                  width: 230,
-                  height: 44,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: FFButtonWidget(
-                          onPressed: () async {
-                            context.pushNamed('HomePage');
-                          },
-                          text: FFLocalizations.of(context).getText(
-                            '4pgx61sd' /* Sign in with Google */,
-                          ),
-                          icon: Icon(
-                            Icons.add,
-                            color: Colors.transparent,
-                            size: 20,
-                          ),
-                          options: FFButtonOptions(
-                            width: 230,
-                            height: 44,
-                            color: Colors.white,
-                            textStyle: GoogleFonts.getFont(
-                              'Roboto',
-                              color: Color(0xFF606060),
-                              fontSize: 17,
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(22, 22, 22, 22),
+                  child: Container(
+                    width: 230,
+                    height: 44,
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional(0, 0),
+                          child: FFButtonWidget(
+                            onPressed: () async {
+                              context.pushNamed('HomePage');
+                            },
+                            text: FFLocalizations.of(context).getText(
+                              '4pgx61sd' /* Sign in with Google */,
                             ),
-                            elevation: 4,
-                            borderSide: BorderSide(
+                            icon: Icon(
+                              Icons.add,
                               color: Colors.transparent,
-                              width: 0,
+                              size: 20,
+                            ),
+                            options: FFButtonOptions(
+                              width: 230,
+                              height: 44,
+                              color: Colors.white,
+                              textStyle: GoogleFonts.getFont(
+                                'Roboto',
+                                color: Color(0xFF606060),
+                                fontSize: 17,
+                              ),
+                              elevation: 4,
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 0,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Align(
-                        alignment: AlignmentDirectional(-0.83, 0),
-                        child: Container(
-                          width: 22,
-                          height: 22,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Image.network(
-                            'https://i0.wp.com/nanophorm.com/wp-content/uploads/2018/04/google-logo-icon-PNG-Transparent-Background.png?w=1000&ssl=1',
-                            fit: BoxFit.contain,
+                        Align(
+                          alignment: AlignmentDirectional(-0.83, 0),
+                          child: Container(
+                            width: 22,
+                            height: 22,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.network(
+                              'https://i0.wp.com/nanophorm.com/wp-content/uploads/2018/04/google-logo-icon-PNG-Transparent-Background.png?w=1000&ssl=1',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
