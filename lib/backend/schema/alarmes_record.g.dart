@@ -63,6 +63,13 @@ class _$AlarmesRecordSerializer implements StructuredSerializer<AlarmesRecord> {
             specifiedType:
                 const FullType(BuiltList, const [const FullType(String)])));
     }
+    value = object.mail;
+    if (value != null) {
+      result
+        ..add('mail')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -112,6 +119,10 @@ class _$AlarmesRecordSerializer implements StructuredSerializer<AlarmesRecord> {
                       BuiltList, const [const FullType(String)]))!
               as BuiltList<Object?>);
           break;
+        case 'mail':
+          result.mail = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -139,6 +150,8 @@ class _$AlarmesRecord extends AlarmesRecord {
   @override
   final BuiltList<String>? days;
   @override
+  final String? mail;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$AlarmesRecord([void Function(AlarmesRecordBuilder)? updates]) =>
@@ -151,6 +164,7 @@ class _$AlarmesRecord extends AlarmesRecord {
       this.endDate,
       this.hour,
       this.days,
+      this.mail,
       this.ffRef})
       : super._();
 
@@ -171,6 +185,7 @@ class _$AlarmesRecord extends AlarmesRecord {
         endDate == other.endDate &&
         hour == other.hour &&
         days == other.days &&
+        mail == other.mail &&
         ffRef == other.ffRef;
   }
 
@@ -180,11 +195,13 @@ class _$AlarmesRecord extends AlarmesRecord {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, number.hashCode), message.hashCode),
-                        startDate.hashCode),
-                    endDate.hashCode),
-                hour.hashCode),
-            days.hashCode),
+                    $jc(
+                        $jc($jc($jc(0, number.hashCode), message.hashCode),
+                            startDate.hashCode),
+                        endDate.hashCode),
+                    hour.hashCode),
+                days.hashCode),
+            mail.hashCode),
         ffRef.hashCode));
   }
 
@@ -197,6 +214,7 @@ class _$AlarmesRecord extends AlarmesRecord {
           ..add('endDate', endDate)
           ..add('hour', hour)
           ..add('days', days)
+          ..add('mail', mail)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -230,6 +248,10 @@ class AlarmesRecordBuilder
   ListBuilder<String> get days => _$this._days ??= new ListBuilder<String>();
   set days(ListBuilder<String>? days) => _$this._days = days;
 
+  String? _mail;
+  String? get mail => _$this._mail;
+  set mail(String? mail) => _$this._mail = mail;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -247,6 +269,7 @@ class AlarmesRecordBuilder
       _endDate = $v.endDate;
       _hour = $v.hour;
       _days = $v.days?.toBuilder();
+      _mail = $v.mail;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -278,6 +301,7 @@ class AlarmesRecordBuilder
               endDate: endDate,
               hour: hour,
               days: _days?.build(),
+              mail: mail,
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;

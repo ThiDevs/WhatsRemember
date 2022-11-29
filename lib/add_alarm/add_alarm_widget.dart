@@ -1,11 +1,9 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_ad_banner.dart';
 import '../flutter_flow/flutter_flow_checkbox_group.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/admob_util.dart' as admob;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -26,7 +24,6 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
   TextEditingController? phoneNumberController;
   List<String>? daysOptionsValues;
   DateTime? datePicked3;
-  bool? interstitialAdSuccess;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -355,29 +352,7 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                     shape: BoxShape.rectangle,
                   ),
                   child: FlutterFlowCheckboxGroup(
-                    options: [
-                      FFLocalizations.of(context).getText(
-                        'dlkgj9at' /* Segunda */,
-                      ),
-                      FFLocalizations.of(context).getText(
-                        'biod0jr6' /* Terça */,
-                      ),
-                      FFLocalizations.of(context).getText(
-                        'kvkidw1b' /* Quarta */,
-                      ),
-                      FFLocalizations.of(context).getText(
-                        'g69ejeei' /* Quinta */,
-                      ),
-                      FFLocalizations.of(context).getText(
-                        '0qmh9qz2' /* Sexta */,
-                      ),
-                      FFLocalizations.of(context).getText(
-                        'cy5st06r' /* Sábado */,
-                      ),
-                      FFLocalizations.of(context).getText(
-                        'ibbrod2u' /* Domingo */,
-                      )
-                    ],
+                    options: FFAppState().daysOptions.toList(),
                     onChanged: (val) => setState(() => daysOptionsValues = val),
                     activeColor: FlutterFlowTheme.of(context).primaryColor,
                     checkColor: Colors.white,
@@ -444,20 +419,11 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                         startDate: datePicked1,
                         endDate: datePicked2,
                         hour: datePicked3,
+                        mail: currentUserEmail,
                       ),
                       'days': daysOptionsValues,
                     };
                     await AlarmesRecord.collection.doc().set(alarmesCreateData);
-
-                    admob.loadInterstitialAd(
-                      "",
-                      "ca-app-pub-4653575622321119/1535669915",
-                      true,
-                    );
-
-                    interstitialAdSuccess = await admob.showInterstitialAd();
-
-                    setState(() {});
                   },
                   child: Container(
                     width: double.infinity,
@@ -515,15 +481,6 @@ class _AddAlarmWidgetState extends State<AddAlarmWidget> {
                       ],
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
-                child: FlutterFlowAdBanner(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  showsTestAd: true,
-                  androidAdUnitID: 'ca-app-pub-4653575622321119/2202965895',
                 ),
               ),
             ],

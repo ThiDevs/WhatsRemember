@@ -68,21 +68,6 @@ Locale createLocale(String language) => language.contains('_')
     : Locale(language);
 
 final kTranslationsMap = <Map<String, Map<String, String>>>[
-  // HomePage
-  {
-    'rur9mv1p': {
-      'pt': '09:15 recorrente todos os dias',
-      'en': '',
-    },
-    '6mx7ta2p': {
-      'pt': 'WhatsRemember',
-      'en': '',
-    },
-    'islk4yh7': {
-      'pt': 'Home',
-      'en': '',
-    },
-  },
   // Login
   {
     '4pgx61sd': {
@@ -94,6 +79,21 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
       'en': '',
     },
     'vr4kkbak': {
+      'pt': 'Home',
+      'en': '',
+    },
+  },
+  // HomePage
+  {
+    'rur9mv1p': {
+      'pt': '09:15 recorrente todos os dias',
+      'en': '',
+    },
+    '6mx7ta2p': {
+      'pt': 'WhatsRemember',
+      'en': '',
+    },
+    'islk4yh7': {
       'pt': 'Home',
       'en': '',
     },

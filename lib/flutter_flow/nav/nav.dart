@@ -77,14 +77,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               appStateNotifier.loggedIn ? HomePageWidget() : LoginWidget(),
           routes: [
             FFRoute(
-              name: 'HomePage',
-              path: 'homePage',
-              builder: (context, params) => HomePageWidget(),
-            ),
-            FFRoute(
               name: 'Login',
               path: 'login',
               builder: (context, params) => LoginWidget(),
+            ),
+            FFRoute(
+              name: 'HomePage',
+              path: 'homePage',
+              builder: (context, params) => HomePageWidget(),
             ),
             FFRoute(
               name: 'AddAlarm',

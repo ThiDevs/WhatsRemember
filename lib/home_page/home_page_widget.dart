@@ -1,5 +1,4 @@
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_ad_banner.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -219,12 +218,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     },
                   ),
                 ),
-              ),
-              FlutterFlowAdBanner(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                showsTestAd: true,
-                androidAdUnitID: 'ca-app-pub-4653575622321119/7662094560',
               ),
             ],
           ),

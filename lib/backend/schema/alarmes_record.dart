@@ -24,6 +24,8 @@ abstract class AlarmesRecord
 
   BuiltList<String>? get days;
 
+  String? get mail;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -31,7 +33,8 @@ abstract class AlarmesRecord
   static void _initializeBuilder(AlarmesRecordBuilder builder) => builder
     ..number = ''
     ..message = ''
-    ..days = ListBuilder();
+    ..days = ListBuilder()
+    ..mail = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('alarmes');
@@ -60,6 +63,7 @@ Map<String, dynamic> createAlarmesRecordData({
   DateTime? startDate,
   DateTime? endDate,
   DateTime? hour,
+  String? mail,
 }) {
   final firestoreData = serializers.toFirestore(
     AlarmesRecord.serializer,
@@ -70,7 +74,8 @@ Map<String, dynamic> createAlarmesRecordData({
         ..startDate = startDate
         ..endDate = endDate
         ..hour = hour
-        ..days = null,
+        ..days = null
+        ..mail = mail,
     ),
   );
 
