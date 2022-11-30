@@ -85,6 +85,10 @@ final kTranslationsMap = <Map<String, Map<String, String>>>[
   },
   // HomePage
   {
+    'n8z2u16u': {
+      'pt': 'Meus alarmes',
+      'en': '',
+    },
     '6mx7ta2p': {
       'pt': 'WhatsRemember',
       'en': 'WhatsRemember',
